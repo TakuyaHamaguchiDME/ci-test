@@ -6,19 +6,19 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      is-ignore-path: 'XX'
+      bar: ${{ steps.foo.outputs.bar }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - id: validate-changed-files
-        run: echo "::set-output name=is-ignore-path::$([ $(git diff --name-only release/medicine-base-develop feature/DEMAE-32418 | grep -P '^(documents/|docker/)' | wc -l) -gt 0 ] && echo 'TRUE' || echo 'FALSE')"
+      - id: foo
+        run: echo "::set-output name=bar::$(echo FOO-BAR)"
       - id: test
-        run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
+        run: echo "${{ steps.foo.outputs.bar }}"
   test-run:
     needs: [setup]
     runs-on: ubuntu-latest
     steps:
       - id: test
-        run: echo "${{ needs.setup.outputs.is-ignore-path }}"
+        run: echo "${{ needs.setup.outputs.bar }}"
 

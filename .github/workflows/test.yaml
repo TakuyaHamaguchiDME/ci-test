@@ -1,9 +1,8 @@
-name: test
+name: outputs sharing example
 on:
   pull_request:
-
 jobs:
-  setup:
+  first:
     runs-on: ubuntu-latest
     outputs:
       bar: ${{ steps.foo.outputs.bar }}
@@ -15,10 +14,9 @@ jobs:
         run: echo "::set-output name=bar::$(echo FOO-BAR)"
       - id: test
         run: echo "${{ steps.foo.outputs.bar }}"
-  test-run:
-    needs: [setup]
+  second:
+    needs: [first]
     runs-on: ubuntu-latest
     steps:
       - id: test
         run: echo "${{ needs.setup.outputs.bar }}"
-

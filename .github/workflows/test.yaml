@@ -28,6 +28,6 @@ jobs:
         run: ignoreCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF")
       - id: allCount
         run: allCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF")
-      - id: count diff
+      - id: countDiff
         run: echo "$ignoreCount $allCount"
 

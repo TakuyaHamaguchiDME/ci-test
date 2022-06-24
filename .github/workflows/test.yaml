@@ -6,13 +6,13 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      is-ignore-path: ${{ steps.validate-changed-files.outputs.is-ignore-path }}
+      is-ignore-path: 'XX'
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - id: validate-changed-files
-        run: echo "::set-output name=is-ignore-path::$([ $(git diff --name-only release/medicine-base-develop feature/DEMAE-32418 | grep -P '^(documents/|docker/)' | wc -l) -gt 0 ] && echo TRUE || echo FALSE)"
+        run: echo "::set-output name=is-ignore-path::$([ $(git diff --name-only release/medicine-base-develop feature/DEMAE-32418 | grep -P '^(documents/|docker/)' | wc -l) -gt 0 ] && echo 'TRUE' || echo 'FALSE')"
       - id: test
         run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
   test-run:

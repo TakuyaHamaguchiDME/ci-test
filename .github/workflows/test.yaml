@@ -32,4 +32,4 @@ jobs:
     needs: [second]
     runs-on: ubuntu-latest
     steps:
-      run: echo "${{ needs.first.outputs.baz }}"
+      - run: echo "${{ needs.first.outputs.baz }}"

@@ -23,10 +23,14 @@ jobs:
           fetch-depth: 0
       - id: test
         if: needs.first.outputs.baz == 'FOO-BAR'
-        run: exit 0
       - id: Count
         run: |
           ignoreCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
           allCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
           echo "$ignoreCount $allCount"
-
+  third:
+    needs: [second]
+    runs-on: ubuntu-latest
+    steps:
+      - id: echo
+        if: echo "${{ needs.first.outputs.baz }}"

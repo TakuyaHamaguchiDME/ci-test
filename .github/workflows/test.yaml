@@ -20,5 +20,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: test
-        run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
+        run: echo "${{ needs.setup.outputs.is-ignore-path }}"
 

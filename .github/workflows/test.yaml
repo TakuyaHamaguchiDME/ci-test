@@ -21,9 +21,5 @@ jobs:
       - id: test
         if: needs.first.outputs.baz == 'FOO-BAR'
         run: exit 0
-      - id: test2
-        run: echo 'FALSE'
-      - id: target
-        run: echo "$GITHUB_BASE_REF"
-      - id: from
-        run: echo "$GITHUB_HEAD_REF"
+      - id: diff
+        run: git diff --name-only "$GITHUB_BASE_REF" "$GITHUB_HEAD_REF"

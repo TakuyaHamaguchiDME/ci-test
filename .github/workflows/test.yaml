@@ -19,4 +19,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: test
-        run: echo "${{ needs.setup.outputs.baz }}"
+        run: echo "${{ needs.first.outputs.baz }}"

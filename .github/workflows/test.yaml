@@ -21,4 +21,5 @@ jobs:
       - id: test
         if: needs.first.outputs.baz == 'TRUE'
         run: exit 0
+      - id: test2
         run: echo 'FALSE'

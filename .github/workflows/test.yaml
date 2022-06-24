@@ -16,7 +16,8 @@ jobs:
         run: echo "::set-output name=is-ignore-path::$([ $(git diff --name-only release/medicine-base-develop feature/DEMAE-32418 | grep -P '^(documents/|docker/)' | wc -l) -gt 0 ] && echo TRUE || echo FALSE)"
       - id: test
         run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
-  test:
+  test-run:
+    needs: [setup]
     runs-on: ubuntu-latest
     - id: test
       run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"

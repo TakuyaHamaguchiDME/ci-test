@@ -24,10 +24,9 @@ jobs:
       - id: test
         if: needs.first.outputs.baz == 'FOO-BAR'
         run: exit 0
-      - id: ignoreCount
-        run: ignoreCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF")
-      - id: allCount
-        run: allCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF")
-      - id: countDiff
-        run: echo "$ignoreCount $allCount"
+      - id: Count
+        run: |
+          ignoreCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF")
+          allCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF")
+          echo "$ignoreCount $allCount"
 

@@ -24,6 +24,6 @@ jobs:
       - id: test2
         run: echo 'FALSE'
       - id: target
-        run: echo ${{env.GITHUB_BASE_REF}}
+        run: echo "${{ env.GITHUB_BASE_REF }}"
       - id: from
-        run: echo ${{env.GITHUB_REF_NAME}}
+        run: echo "${{ env.GITHUB_REF_NAME }}"

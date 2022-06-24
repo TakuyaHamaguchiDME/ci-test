@@ -19,4 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: test
-        run: echo "${{ needs.first.outputs.baz }}"
+        if: needs.first.outputs.baz == 'TRUE'
+          run: exit 0
+        run: echo 'FALSE'

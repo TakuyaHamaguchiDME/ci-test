@@ -33,4 +33,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: echo
-        if: echo "${{ needs.first.outputs.baz }}"
+        run: echo "${{ needs.first.outputs.baz }}"

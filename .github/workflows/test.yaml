@@ -1,0 +1,23 @@
+name: test
+on:
+  pull_request:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      isIgnorePath:
+        value: { { steps.validate-changed-files.outputs.is-ignore-path } }
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - id: validate-changed-files
+        run: echo "::set-output name=is-ignore-path::$([ $(git diff --name-only release/medicine-base-develop feature/DEMAE-32418 | grep -P '^(documents/|docker/)' | wc -l) -gt 0 ] && echo TRUE || echo FALSE)"
+      - id: test
+        run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
+  test:
+    runs-on: ubuntu-latest
+    - id: test
+      run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
+

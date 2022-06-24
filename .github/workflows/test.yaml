@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: test
-        if: needs.first.outputs.baz == 'TRUE'
+        if: needs.first.outputs.baz == 'FOO-BAR'
         run: exit 0
       - id: test2
         run: echo 'FALSE'

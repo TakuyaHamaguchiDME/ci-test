@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 0
       - id: foo
-        run: echo "::set-output name=bar::$(echo FOO-BAR)"
+        run: echo "::set-output name=bar::$(echo FOO-BAR1)"
       - id: test
         run: echo "${{ steps.foo.outputs.bar }}"
   second:

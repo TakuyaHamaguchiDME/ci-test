@@ -1,23 +1,37 @@
-name: test
+name: outputs sharing example
 on:
   pull_request:
-
 jobs:
-  setup:
+  first:
     runs-on: ubuntu-latest
     outputs:
-      isIgnorePath:
-        value: { { steps.validate-changed-files.outputs.is-ignore-path } }
+      baz: ${{ steps.foo.outputs.bar }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - id: validate-changed-files
-        run: echo "::set-output name=is-ignore-path::$([ $(git diff --name-only release/medicine-base-develop feature/DEMAE-32418 | grep -P '^(documents/|docker/)' | wc -l) -gt 0 ] && echo TRUE || echo FALSE)"
+      - id: foo
+        run: echo "::set-output name=bar::$(echo FOO-BAR1)"
       - id: test
-        run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
-  test:
+        run: echo "${{ steps.foo.outputs.bar }}"
+  second:
+    needs: [first]
     runs-on: ubuntu-latest
-    - id: test
-      run: echo "${{ steps.validate-changed-files.outputs.is-ignore-path }}"
-
+    steps:
+      - uses: actions/checkout@v3
+        if: ${{ needs.first.outputs.baz == 'FOO-BAR' }}
+        with:
+          fetch-depth: 0
+      - id: Count
+        if: ${{ needs.first.outputs.baz == 'FOO-BAR' }}
+        run: |
+          ignoreCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
+          allCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
+          echo "$ignoreCount $allCount"
+      - if: ${{ needs.first.outputs.baz != 'FOO-BAR' }}
+        run: echo "FALSE"
+  third:
+    needs: [second]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ needs.first.outputs.baz }}"

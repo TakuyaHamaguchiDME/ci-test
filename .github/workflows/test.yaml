@@ -18,16 +18,17 @@ jobs:
     needs: [first]
     runs-on: ubuntu-latest
     steps:
-      - if: needs.first.outputs.baz == 'FOO-BAR'
-        - uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
-        - id: Count
-          run: |
-            ignoreCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
-            allCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
-            echo "$ignoreCount $allCount"
-      - if: needs.first.outputs.baz != 'FOO-BAR'
+      - uses: actions/checkout@v3
+        if: ${{ needs.first.outputs.baz == 'FOO-BAR' }}
+        with:
+          fetch-depth: 0
+      - id: Count
+        if: ${{ needs.first.outputs.baz == 'FOO-BAR' }}
+        run: |
+          ignoreCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
+          allCount=$(git diff --name-only "origin/$GITHUB_BASE_REF" "origin/$GITHUB_HEAD_REF" | wc -l)
+          echo "$ignoreCount $allCount"
+      - if: ${{ needs.first.outputs.baz != 'FOO-BAR' }}
         run: echo "FALSE"
   third:
     needs: [second]
